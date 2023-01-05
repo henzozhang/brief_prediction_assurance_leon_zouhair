@@ -8,6 +8,7 @@ import sklearn as sk
 
 
 st.title("Estimation la prime d’assurance " )
+
 st.header("Entrez les informations") 
 
 age = st.number_input("l'âge du principal bénéficiaire",value=18)
