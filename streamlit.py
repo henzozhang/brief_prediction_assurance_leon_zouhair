@@ -14,6 +14,11 @@ def categorie_bmi(bmi):
     else:
         return 'obesité'
 
+def categorie_obesite_fumeur(categorie_bmi,smoker):
+    if categorie_bmi == 'obesité' and smoker =='yes':
+        return 'yes'
+    else:
+        return 'no'
 
 
 
@@ -41,17 +46,19 @@ smoker = st.radio("fumeur ou non-fumeur ", ('yes', 'no'), )
 
 region = st.radio("le zone résidentielle", ('southwest', 'southeast', 'northwest', 'northeast'), )
 
+fumeur_et_obesité = categorie_obesite_fumeur(categorie_bmi,smoker)
+
 
 pickle_in = open('my_pipe_ridge.pkl', 'rb') 
 
-my_pipe_ridge = pickle.load(pickle_in) 
+my_pipe_lasso = pickle.load(pickle_in) 
 
 
-donnee =np.array([[age, sex, categorie_bmi, children, smoker, region]])
-df_X=pd.DataFrame(donnee,columns=['age', 'sex', 'categorie_bmi', 'children', 'smoker', 'region'])
+donnee =np.array([[age, sex, categorie_bmi, children, smoker, region,fumeur_et_obesité]])
+df_X=pd.DataFrame(donnee,columns=['age', 'sex', 'categorie_bmi', 'children', 'smoker', 'region','fumeur_et_obesité'])
 
 if(st.button('Calculate')): 
-    prediction = my_pipe_ridge.predict(df_X)
+    prediction = my_pipe_lasso.predict(df_X)
     if prediction >= 1121:
         st.text(f"la prime d’assurance est estime à {int(prediction)}$")
     else:
